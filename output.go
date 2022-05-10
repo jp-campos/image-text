@@ -1,9 +1,9 @@
 package main
 
-func printToCmdLine() {
+func printToCmdLine(rows []string) {
 
 }
 
-func writeToFile() {
+func writeToFile(rows []string) {
 
 }

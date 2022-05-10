@@ -1,29 +1,28 @@
 package main
 
 import (
-	"fmt"
-	"image"
+	"image/jpeg"
 	_ "image/jpeg"
 	"os"
 )
 
 func main() {
 	path := os.Args[1]
-	fmt.Println(path, "PATH")
-	infile, err := os.Open(path)
+	img := fromFile(path)
 
+	f, _ := os.Create("gray.jpg")
+	defer f.Close()
+	pixelatedImg := pixelateImg(img, 5)
+	grayScaleImg := toGrayScale(&pixelatedImg)
+	rows := grayImgToAscii(grayScaleImg)
 
-	if err != nil {
-		panic(err)
+	finalString := ""
+	for _, row := range rows {
+
+		finalString += row + "\n"
+
 	}
-	defer infile.Close()
+	os.WriteFile("output.txt", []byte(finalString), 0644)
+	jpeg.Encode(f, &pixelatedImg, nil)
 
-
-	img, _, err  := image.Decode(infile)
-
-	x:= img.Bounds().Max.X
-	y := img.Bounds().Max.Y
-	
-	
-	fmt.Println(x, y)
 }
